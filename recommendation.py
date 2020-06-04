@@ -67,4 +67,4 @@ def results(movie_name):
         recommendations = recommend_movies(movie_name)
         return recommendations.to_dict('records')
 
-print(results('terminator 3: rise of the machines'))
+#print(results('terminator 3: rise of the machines'))
