@@ -68,14 +68,13 @@ def results(movie_name):
         return recommendations.to_dict('records')
 
 from flask import Flask,request,jsonify
-import recommendation
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)    
         
 @app.route('/movie', methods=['GET'])
-def recommend_movies():
+def movies():
         res = results(request.args.get('title'))
         return jsonify(res)
 
