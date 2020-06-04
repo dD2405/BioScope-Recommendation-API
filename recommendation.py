@@ -68,3 +68,15 @@ def results(movie_name):
         return recommendations.to_dict('records')
 
 #print(results('terminator 3: rise of the machines'))
+from flask import Flask,request,jsonify
+import recommendation
+
+app = Flask(__name__)
+        
+@app.route('/movie', methods=['GET'])
+def recommend_movies():
+        res = results(request.args.get('title'))
+        return jsonify(res)
+
+if __name__=='__main__':
+        app.run(port = 5000, debug = True)
