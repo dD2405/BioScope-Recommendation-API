@@ -69,7 +69,6 @@ def results(movie_name):
 
 #print(results('terminator 3: rise of the machines'))
 from flask import Flask,request,jsonify
-import recommendation
 
 app = Flask(__name__)
         
