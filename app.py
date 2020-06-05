@@ -1,45 +1,32 @@
 import pandas as pd
 import scipy.sparse as sp
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity, linear_kernel
+from sklearn.metrics.pairwise import cosine_similarity
 
-def get_data():
-        movie_data = pd.read_csv('dataset/movie_data.csv')
-        movie_data['original_title'] = movie_data['original_title'].str.lower()
-        return movie_data
+data = pd.read_csv('dataset/movie_data.csv')
+data['original_title'] = movie_data['original_title'].str.lower()
 
-def combine_data(data):
-        data_recommend = data.drop(columns=['movie_id', 'original_title', 'plot'])
-        data_recommend['combine'] = data_recommend[data_recommend.columns[0:]].apply(
+data_recommend = data.drop(columns=['movie_id','plot'])
+data_recommend['combine'] = data_recommend[data_recommend.columns[0:2]].apply(
                                                                         lambda x: ','.join(x.dropna().astype(str)),axis=1)
         
-        data_recommend = data_recommend.drop(columns=[ 'cast','genres'])
-        return data_recommend
-        
-def transform_data(data_combine, data_plot):
-        count = CountVectorizer(stop_words='english')
-        count_matrix = count.fit_transform(data_combine['combine'])
+#data_recommend = data_recommend.drop(columns=['cast','genres'])
 
-        tfidf = TfidfVectorizer(stop_words='english')
-        tfidf_matrix = tfidf.fit_transform(data_plot['plot'])
+count = CountVectorizer(stop_words='english')
+count_matrix = count.fit_transform(data_recommend['combine'])
+tfidf = TfidfVectorizer(stop_words='english')
+tfidf_matrix = tfidf.fit_transform(data['plot'])
 
-        combine_sparse = sp.hstack([count_matrix, tfidf_matrix], format='csr')
-        cosine_sim = cosine_similarity(combine_sparse, combine_sparse)
-        #cosine_sim = linear_kernel(combine_sparse, combine_sparse)
-        return cosine_sim
+combine_sparse = sp.hstack([count_matrix, tfidf_matrix], format='csr')
+cosine_sim = cosine_similarity(combine_sparse, combine_sparse)
 
+indices = pd.Series(data_recommend.index, index = data_recommend['original_title'])
 
 def recommend_movies(title):
         title = title.lower()
-
-        data = get_data()
-        combine = combine_data(data)
-        transform = transform_data(combine,data)
-
-        indices = pd.Series(data.index, index = data['original_title'])
         index = indices[title]
 
-        if title not in data['original_title'].unique():
+        if title not in data_recommend['original_title'].unique():
                 return 'Movie not in Database'
 
         else:
@@ -49,8 +36,8 @@ def recommend_movies(title):
 
                 movie_indices = [i[0] for i in sim_scores]
                 movie_id = data['movie_id'].iloc[movie_indices]
-                movie_title = data['original_title'].iloc[movie_indices]
-                movie_genres = data['genres'].iloc[movie_indices]
+                #movie_title = data['original_title'].iloc[movie_indices]
+                #movie_genres = data['genres'].iloc[movie_indices]
 
                 recommendation_data = pd.DataFrame(columns=['Movie_Id'])
 
@@ -61,11 +48,8 @@ def recommend_movies(title):
                 #recommendation_data['Name'] = movie_title
                 #recommendation_data['genre'] = movie_genres
 
-                return recommendation_data
+                return recommendation_data.to_dict('records')
         
-def results(movie_name):
-        recommendations = recommend_movies(movie_name)
-        return recommendations.to_dict('records')
 
 from flask import Flask,request,jsonify
 from flask_cors import CORS
@@ -75,7 +59,7 @@ CORS(app)
         
 @app.route('/movie', methods=['GET'])
 def movies():
-        res = results(request.args.get('title'))
+        res = recommend_movies(request.args.get('title'))
         return jsonify(res)
 
 if __name__=='__main__':
