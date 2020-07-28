@@ -25,7 +25,7 @@ def transform_data(data_combine, data_plot):
 
         combine_sparse = sp.hstack([count_matrix, tfidf_matrix], format='csr')
         cosine_sim = cosine_similarity(combine_sparse, combine_sparse)
-        #cosine_sim = linear_kernel(combine_sparse, combine_sparse)
+        
         return cosine_sim
 
 
@@ -50,14 +50,14 @@ def recommend_movies(title):
                 movie_indices = [i[0] for i in sim_scores]
                 movie_id = data['movie_id'].iloc[movie_indices]
                 movie_title = data['original_title'].iloc[movie_indices]
-                #movie_genres = data['genres'].iloc[movie_indices]
+                movie_genres = data['genres'].iloc[movie_indices]
 
                 recommendation_data = pd.DataFrame(columns=['Movie_Id','Name'])
 
                 recommendation_data['Movie_Id'] = movie_id
 
                 recommendation_data['Name'] = movie_title
-                #recommendation_data['genre'] = movie_genres
+                recommendation_data['genre'] = movie_genres
 
                 return recommendation_data
 
