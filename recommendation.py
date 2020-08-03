@@ -46,11 +46,11 @@ def recommend_movies(title, data, combine, transform):
         movie_title = data['original_title'].iloc[movie_indices]
         movie_genres = data['genres'].iloc[movie_indices]
 
-        recommendation_data = pd.DataFrame(columns=['Movie_Id','Name'])
+        recommendation_data = pd.DataFrame(columns=['Movie_Id','Name', 'Genres'])
 
         recommendation_data['Movie_Id'] = movie_id
         recommendation_data['Name'] = movie_title
-        recommendation_data['genre'] = movie_genres
+        recommendation_data['Genres'] = movie_genres
 
         return recommendation_data
 
