@@ -30,8 +30,6 @@ def transform_data(data_combine, data_plot):
 
 
 def recommend_movies(title):
-        title = title.lower()
-
         data = get_data()
         combine = combine_data(data)
         transform = transform_data(combine,data)
@@ -59,6 +57,7 @@ def recommend_movies(title):
         return recommendation_data
 
 def results(movie_name):
+        movie_name = movie_name.lower()
         find_movie = get_data()
         
         if movie_name not in find_movie['original_title'].unique():
