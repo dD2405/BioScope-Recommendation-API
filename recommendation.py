@@ -29,20 +29,19 @@ def transform_data(data_combine, data_plot):
         return cosine_sim
 
 
-def recommend_movies(title):
-        data = get_data()
-        combine = combine_data(data)
-        transform = transform_data(combine,data)
-
+def recommend_movies(title, data, combine, transform):
         indices = pd.Series(data.index, index = data['original_title'])
         index = indices[title]
+
+
 
         sim_scores = list(enumerate(transform[index]))
         sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
         sim_scores = sim_scores[1:21]
 
+
         movie_indices = [i[0] for i in sim_scores]
-        
+
         movie_id = data['movie_id'].iloc[movie_indices]
         movie_title = data['original_title'].iloc[movie_indices]
         movie_genres = data['genres'].iloc[movie_indices]
@@ -50,7 +49,6 @@ def recommend_movies(title):
         recommendation_data = pd.DataFrame(columns=['Movie_Id','Name'])
 
         recommendation_data['Movie_Id'] = movie_id
-
         recommendation_data['Name'] = movie_title
         recommendation_data['genre'] = movie_genres
 
@@ -58,12 +56,14 @@ def recommend_movies(title):
 
 def results(movie_name):
         movie_name = movie_name.lower()
+
         find_movie = get_data()
-        
+        combine_result = combine_data(find_movie)
+        transform_result = transform_data(combine_result,find_movie)
+
         if movie_name not in find_movie['original_title'].unique():
                 return 'Movie not in Database'
-    
-        else:
-                recommendations = recommend_movies(movie_name)
-                return recommendations.to_dict('records')
 
+        else:
+                recommendations = recommend_movies(movie_name, find_movie, combine_result, transform_result)
+                return recommendations.to_dict('records')
