@@ -39,29 +39,32 @@ def recommend_movies(title):
         indices = pd.Series(data.index, index = data['original_title'])
         index = indices[title]
 
-        if title not in data['original_title'].unique():
-                return 'Movie not in Database'
+        sim_scores = list(enumerate(transform[index]))
+        sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+        sim_scores = sim_scores[1:21]
 
-        else:
-                sim_scores = list(enumerate(transform[index]))
-                sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-                sim_scores = sim_scores[1:21]
+        movie_indices = [i[0] for i in sim_scores]
+        
+        movie_id = data['movie_id'].iloc[movie_indices]
+        movie_title = data['original_title'].iloc[movie_indices]
+        movie_genres = data['genres'].iloc[movie_indices]
 
-                movie_indices = [i[0] for i in sim_scores]
-                movie_id = data['movie_id'].iloc[movie_indices]
-                movie_title = data['original_title'].iloc[movie_indices]
-                movie_genres = data['genres'].iloc[movie_indices]
+        recommendation_data = pd.DataFrame(columns=['Movie_Id','Name'])
 
-                recommendation_data = pd.DataFrame(columns=['Movie_Id','Name'])
+        recommendation_data['Movie_Id'] = movie_id
 
-                recommendation_data['Movie_Id'] = movie_id
+        recommendation_data['Name'] = movie_title
+        recommendation_data['genre'] = movie_genres
 
-                recommendation_data['Name'] = movie_title
-                recommendation_data['genre'] = movie_genres
-
-                return recommendation_data
+        return recommendation_data
 
 def results(movie_name):
-        recommendations = recommend_movies(movie_name)
-        return recommendations.to_dict('records')
+        find_movie = get_data()
+        
+        if movie_name not in find_movie['original_title'].unique():
+                return 'Movie not in Database'
+    
+        else:
+                recommendations = recommend_movies(movie_name)
+                return recommendations.to_dict('records')
 
