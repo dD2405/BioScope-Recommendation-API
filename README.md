@@ -8,6 +8,10 @@ We have more than 6000 movies present in our dataset and our recommendation algo
 
 ## Use the BioScope API whilst building your website or app and recommend movies to your users accordingly.
 
+# Source Datasets:- 
+- TMDB 5000 Movies Dataset: https://www.kaggle.com/tmdb/tmdb-movie-metadata
+- The Indian Movie Database: https://www.kaggle.com/tmdb/tmdb-movie-metadata
+
 # File Description:- 
 ## recommendation.py
 Here, we have our logic written for the recommendation algorithm. Consists a total of 5 functions
