@@ -8,11 +8,12 @@ We have more than 6000 movies present in our dataset and our recommendation algo
 
 ## Use the BioScope API whilst building your website or app and recommend movies to your users accordingly.
 
-# recommendation.py
+# File Description:- 
+## recommendation.py
 Here, we have our logic written for the recommendation algorithm. Consists a total of 5 functions
 
-## get_data(): 
+### get_data(): 
 - get_data() is used to fetch the data about the movies and return the dataset with it's attributes as the result for further preprocessing.
 
-## combine_data():-
+### combine_data():-
 - combine_data() drops the columns not required for feature extraction and then combines the cast and genres column,finally returning the combine column as the result of this function.
