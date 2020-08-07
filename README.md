@@ -29,3 +29,14 @@ Here, we have our logic written for the recommendation algorithm. Consists a tot
 
 ## app.py
 - The Flask app where we use the recommendation.py as a module and return the results in JSON format. 
+
+## requirements.txt
+- This has all the dependencies required to deploy our application on Heroku
+
+## Procfile
+
+- A Procfile is a file which describes how to run your application.
+
+# Folder
+## Dataset
+- Contains the dataset we have used to build our recommendation system.
