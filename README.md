@@ -15,4 +15,4 @@ Here, we have our logic written for the recommendation algorithm. Consists a tot
 ## get_data() is used to fetch the data about the movies and return the dataset with it's attributes as the result for further preprocessing.
 
 - combine_data():-
-## combine_data() drops the columns not required for feature extraction and then combines the cast and genres column,finally returning the combine column as the result of this function.
+##### combine_data() drops the columns not required for feature extraction and then combines the cast and genres column,finally returning the combine column as the result of this function.
