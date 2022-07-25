@@ -1,5 +1,7 @@
 # BioScope-Recommendation-API
 
+- Blog Link : https://towardsdatascience.com/build-a-movie-recommendation-api-using-scikit-learn-flask-and-heroku-bee239dc96e3
+
 - API Link : https://bioscope-api.herokuapp.com/movie?title=insert-movie-name
 
 An open movie recommendation API that has been built using Python and deployed on Heroku. 
